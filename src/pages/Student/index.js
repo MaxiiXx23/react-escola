@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { isEmail, isInt, isFloat } from 'validator';
 import { get } from 'lodash';
+import { FaEdit, FaUserCircle } from 'react-icons/fa';
 
 import { loginFailure } from '../../store/slices/auth';
 import history from '../../services/history';
 import axios from '../../services/axios';
 
+import { ProfilePhoto } from './styled';
 import { Container, Form } from '../../styles/GlobalStyled';
 
 export default function Student() {
@@ -19,7 +21,7 @@ export default function Student() {
     const [age, setAge] = useState('');
     const [weight, setWeight] = useState('');
     const [height, setHeight] = useState('');
-
+    const [photo, setPhoto] = useState('');
     const dispatch = useDispatch();
     const { id } = useParams();
 
@@ -28,12 +30,14 @@ export default function Student() {
         async function getData() {
             try {
                 const { data } = await axios.get(`/alunos/${id}`);
+                const getPhoto = get(data, 'Fotos.[0].url', '');
                 setName(data.nome);
                 setLastName(data.sobrenome);
                 setEmail(data.email);
                 setAge(data.idade);
                 setWeight(data.peso);
-                setHeight(data.altura)
+                setHeight(data.altura);
+                setPhoto(getPhoto);
             } catch (err) {
                 const errors = get(err, 'response.data.errors', [])
                 const status = get(err, 'response.status', 0)
@@ -195,15 +199,15 @@ export default function Student() {
                         progress: undefined,
                     }))
             } else {
-                    toast.error('unknown error', {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    })
+                toast.error('unknown error', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             }
             if (status === 401) {
                 dispatch(loginFailure())
@@ -219,6 +223,18 @@ export default function Student() {
                 <h1>Edit the Student. 🤓</h1>
                 : <h1>Create a Student to School. 🤓</h1>
             }
+            {id && (
+                <ProfilePhoto>
+                    {
+                        photo ?
+                            <img src={photo} alt={name} />
+                            : <FaUserCircle size={120} />
+                    }
+                    <Link to={`/photos/${id}`}>
+                        <FaEdit size={24}/>
+                    </Link>
+                </ProfilePhoto>
+            )}
             <Form onSubmit={handleSubmit}>
                 <label htmlFor='name'>
                     Name:
