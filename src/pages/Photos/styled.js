@@ -7,3 +7,28 @@ export const Title = styled.h1`
         margin-left: 50px;
     }
 `
+
+export const FormPhoto = styled.form`
+    label{
+        width: 120px;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #636e72;
+        border: 4px dashed #d63031;
+        margin: 30px auto;
+        cursor: pointer;
+        border-radius: 50%;
+        color: #fff;
+        overflow: hidden;
+    }
+    input{
+        display: none;
+    }
+    img{
+        width: 120px;
+        height: 120px;
+
+    }
+`;
