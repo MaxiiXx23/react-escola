@@ -32,3 +32,11 @@ export const FormPhoto = styled.form`
 
     }
 `;
+
+export const ContainerBtnConfirm = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px;
+    
+`;
