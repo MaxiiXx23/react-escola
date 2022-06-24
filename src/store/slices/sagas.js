@@ -8,7 +8,7 @@ function* workGetLoginFetch({ payload }) {
     try {
         const response = yield call(axios.post, '/token', payload);
         yield put(loginSuccess(response.data));
-        toast.error('Login successfully.', {
+        toast.success('Login successfully.', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
